@@ -13,5 +13,7 @@ fn main() {
 
     match &args.command {
         Commands::Fix(args) => args.to_owned().run(),
+        Commands::Refactor(args) => args.to_owned().run(),
+        Commands::Feat(args) => args.to_owned().run(),
     }
 }
