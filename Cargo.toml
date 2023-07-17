@@ -2,6 +2,8 @@
 name = "gou-git"
 version = "0.1.0"
 edition = "2021"
+description = "Gou is a CLI git wrapper that enables trunk-based development"
+license = "MIT"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
