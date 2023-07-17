@@ -22,7 +22,7 @@ impl Git {
             .expect("Failed to wait for pop stash");
     }
 
-    pub fn checkout(branch_name: &str) {
+    pub fn checkout_create(branch_name: &str) {
         Command::new("git")
             .arg("checkout")
             .arg("-b")
@@ -31,6 +31,16 @@ impl Git {
             .expect("Failed to create feat branch")
             .wait()
             .expect("Failed to wait for feat branch");
+    }
+
+    pub fn checkout(branch_name: &str) {
+        Command::new("git")
+            .arg("checkout")
+            .arg(branch_name)
+            .spawn()
+            .expect("Failed to checkout feat branch")
+            .wait()
+            .expect("Failed to wait for checkout feat branch");
     }
 
     pub fn add() {

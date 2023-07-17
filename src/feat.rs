@@ -31,7 +31,7 @@ impl Feat {
         });
 
         Git::stash();
-        Git::checkout(&branch_name);
+        Git::checkout_create(&branch_name);
         Git::stash_pop();
         Git::add();
         Git::commit(&format!("feat: {}", message));
