@@ -6,6 +6,6 @@ pub struct Refactor {
 
 impl Refactor {
     pub fn run(self) {
-        println!("Refactor");
+        println!("Prates refactor");
     }
 }
