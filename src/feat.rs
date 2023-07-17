@@ -1,6 +1,6 @@
 use std::process::Command;
 
-use crate::config::CONFIG;
+use crate::{config::CONFIG, git::Git, github::Github};
 
 #[derive(Debug, Clone, clap::Parser)]
 pub struct Feat {
@@ -30,72 +30,15 @@ impl Feat {
                 .expect("Failed to wait for build command");
         });
 
-        Command::new("git")
-            .arg("stash")
-            .spawn()
-            .expect("Failed to stash changes")
-            .wait()
-            .expect("Failed to wait for stash changes");
+        Git::stash();
+        Git::checkout(&branch_name);
+        Git::stash_pop();
+        Git::add();
+        Git::commit(&format!("feat: {}", message));
+        Git::push_set_upstream(&branch_name);
 
+        Github::create_pr(&format!("feat: {}", message), &target_branch);
 
-        Command::new("git")
-            .arg("checkout")
-            .arg("-b")
-            .arg(&branch_name)
-            .spawn()
-            .expect("Failed to create feat branch")
-            .wait()
-            .expect("Failed to wait for feat branch");
-
-        Command::new("git")
-            .arg("stash")
-            .arg("pop")
-            .spawn()
-            .expect("Failed to pop stash")
-            .wait()
-            .expect("Failed to wait for pop stash");
-
-        Command::new("git")
-            .arg("add")
-            .arg(".")
-            .spawn()
-            .expect("Failed to add changes")
-            .wait()
-            .expect("Failed to wait for add changes");
-
-        Command::new("git")
-            .arg("commit")
-            .arg("-m")
-            .arg(format!("feat: {}", message))
-            .spawn()
-            .expect("Failed to commit changes")
-            .wait()
-            .expect("Failed to wait for commit changes");
-
-        Command::new("git")
-            .arg("push")
-            .arg("--set-upstream")
-            .arg("origin")
-            .arg(&branch_name)
-            .spawn()
-            .expect("Failed to push changes")
-            .wait()
-            .expect("Failed to wait for push changes");
-
-        Command::new("gh")
-            .arg("pr")
-            .arg("create")
-            .arg("--title")
-            .arg(format!("feat: {}", message))
-            .arg("--body")
-            .arg("")
-            .arg("--base")
-            .arg(target_branch)
-            .spawn()
-            .expect("Failed to create PR")
-            .wait()
-            .expect("Failed to wait for create PR");
-
-        println!("Feat");
+        Git::checkout(&target_branch);
     }
 }
