@@ -14,16 +14,27 @@ impl Feat {
 
         build::build_if_configured();
 
-        Git::add();
-        Git::stash();
-        Git::checkout_create(&branch_name);
-        Git::stash_pop();
-        Git::add();
-        Git::commit(&format!("feat: {}", message));
-        Git::push_set_upstream(&branch_name);
+        Git::transaction()
+            .add()
+            .stash()
+            .checkout_create(&branch_name)
+            .stash_pop()
+            .add()
+            .commit(&format!("feat: {}", message))
+            .push_set_upstream(&branch_name)
+            .execute();
+
+        // Git::add();
+        // Git::stash();
+        // Git::checkout_create(&branch_name);
+        // Git::stash_pop();
+        // Git::add();
+        // Git::commit(&format!("feat: {}", message));
+        // Git::push_set_upstream(&branch_name);
 
         Github::create_pr(&format!("feat: {}", message), &target_branch);
 
-        Git::checkout(&target_branch);
+        Git::transaction()
+            .checkout(&target_branch);
     }
 }
