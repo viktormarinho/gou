@@ -1,4 +1,5 @@
 use std::process::Command;
+use pretty_log::{log, PrettyError};
 
 use crate::{config::CONFIG, git::Git, github::Github};
 
@@ -12,10 +13,12 @@ impl Feat {
     pub fn run(self) {
         let message = self.message.join(" ");
         let branch_name = format!("feat/{}", message.to_lowercase().replace(" ", "-"));
-        let target_branch = CONFIG.main_branch.clone().unwrap_or(String::from("main"));
+        let target_branch = CONFIG.main_branch.clone();
 
         CONFIG.build_command.as_ref().map(|cmd| {
-            println!("Running build command: {}", cmd);
+            log::info(
+                &format!("Running build command: {}", cmd)
+            );
 
             let mut args = cmd.split_whitespace();
             let mut cmd = Command::new(args.nth(0).unwrap());
@@ -25,9 +28,9 @@ impl Feat {
             }
 
             cmd.spawn()
-                .expect("Failed to run build command")
+                .expect_p("[gou] Failed to run build command")
                 .wait()
-                .expect("Failed to wait for build command");
+                .expect_p("[gou] Failed to wait for build command");
         });
 
         Git::add();

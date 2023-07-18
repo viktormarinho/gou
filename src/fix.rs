@@ -1,6 +1,6 @@
 use crate::{config::CONFIG, git::Git, github::Github};
 use std::process::Command;
-
+use pretty_log::{log, PrettyError};
 
 #[derive(Debug, Clone, clap::Parser)]
 pub struct Fix {
@@ -12,10 +12,12 @@ impl Fix {
     pub fn run(self) {
         let message = self.message.join(" ");
         let branch_name = format!("fix/{}", message.to_lowercase().replace(" ", "-"));
-        let target_branch = CONFIG.main_branch.clone().unwrap_or(String::from("main"));
+        let target_branch = CONFIG.main_branch.clone();
 
         CONFIG.build_command.as_ref().map(|cmd| {
-            println!("Running build command: {}", cmd);
+            log::info(
+                &format!("[gou] Running build command: {}", cmd)
+            );
 
             let mut args = cmd.split_whitespace();
             let mut cmd = Command::new(args.nth(0).unwrap());
@@ -25,9 +27,9 @@ impl Fix {
             }
 
             cmd.spawn()
-                .expect("Failed to run build command")
+                .expect_p("[gou] Failed to run build command")
                 .wait()
-                .expect("Failed to wait for build command");
+                .expect_p("[gou] Failed to wait for build command");
         });
 
         Git::add();
