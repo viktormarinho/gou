@@ -1,5 +1,7 @@
 use std::process::Command;
 
+use pretty_log::PrettyError;
+
 pub struct Git;
 
 impl Git {
@@ -7,9 +9,9 @@ impl Git {
         Command::new("git")
             .arg("stash")
             .spawn()
-            .expect("Failed to stash changes")
+            .expect_p("[gou] Failed to stash changes")
             .wait()
-            .expect("Failed to wait for stash changes");
+            .expect_p("[gou] Failed to wait for stash changes");
     }
 
     pub fn stash_pop() {
@@ -17,9 +19,9 @@ impl Git {
             .arg("stash")
             .arg("pop")
             .spawn()
-            .expect("Failed to pop stash")
+            .expect_p("[gou] Failed to pop stash")
             .wait()
-            .expect("Failed to wait for pop stash");
+            .expect_p("[gou] Failed to wait for pop stash");
     }
 
     pub fn checkout_create(branch_name: &str) {
@@ -28,9 +30,9 @@ impl Git {
             .arg("-b")
             .arg(branch_name)
             .spawn()
-            .expect("Failed to create feat branch")
+            .expect_p("[gou] Failed to create feat branch")
             .wait()
-            .expect("Failed to wait for feat branch");
+            .expect_p("[gou] Failed to wait for feat branch");
     }
 
     pub fn checkout(branch_name: &str) {
@@ -38,9 +40,9 @@ impl Git {
             .arg("checkout")
             .arg(branch_name)
             .spawn()
-            .expect("Failed to checkout feat branch")
+            .expect_p("[gou] Failed to checkout feat branch")
             .wait()
-            .expect("Failed to wait for checkout feat branch");
+            .expect_p("[gou] Failed to wait for checkout feat branch");
     }
 
     pub fn add() {
@@ -48,9 +50,9 @@ impl Git {
             .arg("add")
             .arg(".")
             .spawn()
-            .expect("Failed to add changes")
+            .expect_p("[gou] Failed to add changes")
             .wait()
-            .expect("Failed to wait for add changes");
+            .expect_p("[gou] Failed to wait for add changes");
     }
 
     pub fn commit(message: &str) {
@@ -59,9 +61,9 @@ impl Git {
             .arg("-m")
             .arg(message)
             .spawn()
-            .expect("Failed to commit changes")
+            .expect_p("[gou] Failed to commit changes")
             .wait()
-            .expect("Failed to wait for commit changes");
+            .expect_p("[gou] Failed to wait for commit changes");
     }
 
     pub fn push_set_upstream(branch_name: &str) {
@@ -71,17 +73,17 @@ impl Git {
             .arg("origin")
             .arg(&branch_name)
             .spawn()
-            .expect("Failed to push changes")
+            .expect_p("[gou] Failed to push changes")
             .wait()
-            .expect("Failed to wait for push changes");
+            .expect_p("[gou] Failed to wait for push changes");
     }
 
     pub fn pull() {
         Command::new("git")
             .arg("pull")
             .spawn()
-            .expect("Failed to pull changes")
+            .expect_p("[gou] Failed to pull changes")
             .wait()
-            .expect("Failed to wait for pull changes");
+            .expect_p("[gou] Failed to wait for pull changes");
     }
 }
