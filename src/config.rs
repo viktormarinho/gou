@@ -7,24 +7,37 @@ lazy_static! {
     pub static ref CONFIG: Config = Config::load();
 }
 
+#[derive(Debug, Deserialize, Clone)]
+#[serde(rename_all = "lowercase")]
+pub enum BuildMode {
+    Remote,
+    Local
+}
+
+#[derive(Debug, Deserialize, Clone)]
+pub struct BuildConfig {
+    pub cmd: String,
+    pub mode: BuildMode
+}
+
 #[derive(Debug, Deserialize)]
 struct LoadableConfig {
-    pub build_command: Option<String>,
+    pub build: Option<BuildConfig>,
     pub main_branch: Option<String>
 }
 
 impl Default for LoadableConfig {
     fn default() -> Self {
         LoadableConfig {
-            build_command: None,
+            build: None,
             main_branch: None
         }
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Config {
-    pub build_command: Option<String>,
+    pub build: Option<BuildConfig>,
     pub main_branch: String
 }
 
@@ -43,7 +56,7 @@ impl Config {
         let config = config.unwrap();
 
         Config {
-            build_command: config.build_command,
+            build: config.build,
             main_branch: config.main_branch.unwrap_or(String::from("main")),
         }
     }

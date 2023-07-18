@@ -1,1 +1,2 @@
-build_command = "cargo build"
+build = { mode = "local", cmd = "cargo build" }
+main_branch = "main"
