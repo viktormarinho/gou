@@ -1,6 +1,6 @@
 [package]
 name = "gou-git"
-version = "0.2.0"
+version = "0.2.5"
 edition = "2021"
 description = "Gou is a CLI git wrapper that enables trunk-based development"
 license = "MIT"
@@ -11,7 +11,7 @@ authors = ["viktormarinho"]
 [dependencies]
 clap = { version = "4.0", features = ["derive"] }
 lazy_static = "1.4.0"
-pretty-log = "1.0.0"
+pretty-log = "1.5.1"
 serde = { version = "1.0", features = ["derive"] }
 toml = "0.7.6"
 

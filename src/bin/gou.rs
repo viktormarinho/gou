@@ -1,5 +1,6 @@
 use gou_git::commands::Commands;
 use clap::Parser;
+use pretty_log::log;
 
 
 #[derive(Parser, Debug, Clone)]
@@ -11,6 +12,7 @@ struct Args {
 
 fn main() {
     let args = Args::parse();
+    log::init("[gou]");
 
     match &args.command {
         Commands::Fix(args) => args.to_owned().run(),

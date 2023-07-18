@@ -9,24 +9,24 @@ pub fn build_if_configured() {
         match &cfg.mode {
             BuildMode::Local => {
                 let mut args = cfg.cmd.split_whitespace();
-                let mut cmd = Command::new(args.nth(0).expect_p("[gou] Build command is empty"));
+                let mut cmd = Command::new(args.nth(0).expect_p("Build command is empty"));
     
                 for arg in args {
                     cmd.arg(arg);
                 }
     
-                log::info(&format!("[gou] Running build command: {}", cfg.cmd));
+                log::info(&format!("Running build command: {}", cfg.cmd));
                 cmd.spawn()
-                    .expect_p("[gou] Failed to run build command")
+                    .expect_p("Failed to run build command")
                     .wait()
-                    .expect_p("[gou] Failed to wait for build command");
+                    .expect_p("Failed to wait for build command");
             },
             BuildMode::Remote => {
-                log::warn("[gou] Remote build selected - not implemented yet. Skipping build step");
+                log::warn("Remote build selected - not implemented yet. Skipping build step");
             }
         }
         return;
     }
 
-    log::warn("[gou] No build configured, skipping build step");
+    log::warn("No build configured, skipping build step");
 }
