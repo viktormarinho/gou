@@ -30,6 +30,7 @@ impl Feat {
                 .expect("Failed to wait for build command");
         });
 
+        Git::add();
         Git::stash();
         Git::checkout_create(&branch_name);
         Git::stash_pop();
