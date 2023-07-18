@@ -49,7 +49,7 @@ impl Config {
 
         if let Err(e) = config {
             log::error_exit(
-                &format!("[gou] Failed to parse config file: {}", e)
+                &format!("Failed to parse config file: {}", e)
             );
         }
 

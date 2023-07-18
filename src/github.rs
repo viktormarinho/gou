@@ -1,5 +1,7 @@
 use std::process::Command;
 
+use pretty_log::PrettyError;
+
 pub struct Github;
 
 impl Github {
@@ -14,8 +16,8 @@ impl Github {
             .arg("--base")
             .arg(target_branch)
             .spawn()
-            .expect("Failed to create PR")
+            .expect_p("Failed to create PR")
             .wait()
-            .expect("Failed to wait for create PR");
+            .expect_p("Failed to wait for create PR");
     }
 }
