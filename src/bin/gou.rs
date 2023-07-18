@@ -3,6 +3,7 @@ use clap::Parser;
 
 
 #[derive(Parser, Debug, Clone)]
+#[command(author, version, about, long_about = None)]
 struct Args {
     #[command(subcommand)]
     command: Commands
