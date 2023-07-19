@@ -89,6 +89,7 @@ impl GitTransaction {
                             error
                         ));
                         self.rollback();
+                        log::error_exit("Rolled back git changes successfully.");
                     }
                 },
                 Operation::StashPop => match Git::stash_pop() {
@@ -221,7 +222,6 @@ impl GitTransaction {
                 }
             }
         }
-        log::info("Rolled back git changes successfully.");
     }
 }
 
